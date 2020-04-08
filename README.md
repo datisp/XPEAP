@@ -106,8 +106,8 @@ The usage is super simple: Having finished the previous downloading step, just m
 
 The variables for the R analysis are predefined and worked perfectly fine for my data, but you may change them for your own analysis:
 
-* `cutoff_counts="10"`: This variable defines the cutoff for the minimal required read number mapped per 3'end and helps to dismiss false positive results. Can be increased by higher sequencing depth.
-* `cutoff_padj="0.05"`: cutoff for adjusted *p*-value (Benjamini-Hochberg algorithm, computed using DESeq2), all 3'ends with an equal or lower adj. *p*-value are kept for further analysis
+* `cutoff_counts="10"`: This variable defines the cutoff for the minimal required read number mapped per X'end and helps to dismiss false positive results. Can be increased by higher sequencing depth.
+* `cutoff_padj="0.05"`: cutoff for adjusted *p*-value (Benjamini-Hochberg algorithm, computed using DESeq2), all X'ends with an equal or lower adj. *p*-value are kept for further analysis
 * `cutoff_log2FC="1"`: cutoff for minimal required log2 fold change comparing strain1 and strain2 (computed using DESeq2)
 
 
