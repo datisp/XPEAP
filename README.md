@@ -5,4 +5,4 @@
 ![simplified XPEAP flowchart](structure_simple.svg)
 
 
-![simplified XPEAP flowchart](flowchart_XPEAP.png)
+![simplified XPEAP flowchart](flowchart_XPEAP_transparent.svg)
