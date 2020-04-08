@@ -43,7 +43,7 @@ XPEAP provides the full RNA sequencing analysis package with a focus on X'end an
 ### Structure
 `XPEAP.sh` includes seven other scripts, which are sequentially executed after having started `XPEAP.sh`.
 
-![XPEAP structure](https://raw.githubusercontent.com/datisp/XPEAP/master/structure_simple.svg?token=APCNPXK7Y7UGSVPLE3R3X626RXLSU)
+![XPEAP structure](structure_simple.svg)
 
 ### A more detailed view on the processes
 For those users, who want to dig a bit deeper...
