@@ -45,10 +45,6 @@ XPEAP provides the full RNA sequencing analysis package with a focus on X'end an
 
 ![XPEAP structure](structure_simple.svg)
 
-### A more detailed view on the processes
-For those users, who want to dig a bit deeper...
-![simplified XPEAP flowchart](flowchart_XPEAP_transparent.svg)
-
 ## Requirements
 
 This pipeline integrates many commonly used tools and R packages:
@@ -165,4 +161,6 @@ export cutoff_padj="0.05"
 export cutoff_log2FC="1"
 ```
 
-
+## A more detailed view on the processes
+For those users, who want to dig a bit deeper...
+![simplified XPEAP flowchart](flowchart_XPEAP_transparent.svg)
