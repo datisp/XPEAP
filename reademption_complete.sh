@@ -1,9 +1,8 @@
 #!/bin/bash
 
-### READemption pipeline for PNPase versus WT new
-### 2020-02-19
+### READemption pipeline: 3'end anaylsis, full coverage and both with merged read files
 
-echo "script_reademption_complete.sh started..."
+echo "reademption_complete.sh started..."
 
 # activate READemption conda env
 source activate $conda_reademption
