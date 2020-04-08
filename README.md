@@ -47,7 +47,7 @@ XPEAP provides the full RNA sequencing analysis package with a focus on X'end an
 
 ### A more detailed view on the processes
 For those users, who want to dig a bit deeper...
-`![simplified XPEAP flowchart](flowchart_XPEAP.svg)`
+`![simplified XPEAP flowchart](flowchart_XPEAP_transparent.svg)`
 
 ## Requirements
 
