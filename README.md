@@ -161,6 +161,6 @@ export cutoff_padj="0.05"
 export cutoff_log2FC="1"
 ```
 
-## A more detailed view on the processes
-For those users, who want to dig a bit deeper...
+## A more detailed view on the pipeline
+For those those of you, who want to dig a bit deeper... here is a simplified flowchart.
 ![simplified XPEAP flowchart](flowchart_XPEAP_transparent.svg)
