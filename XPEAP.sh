@@ -7,26 +7,9 @@ echo "  /       \ /_____/ |  |_> >  | \/  |  Y Y  \  ___/  /_____/  / __ \|   | 
 echo " /______  /         |   __/|__|  |__|__|_|  /\___  >         (____  /___|  (____  /____/ ____/____  >__/____  >"
 echo "        \/          |__|                  \/     \/               \/     \/     \/     \/         \/        \/"
 
-# 2020-03-17 version 0.1
+# 2020-04-07 version 0.2
 # written by Daniel-Timon Spanka
 # contact daniel-timon.spanka@mikro.bio.uni-giessen.de
-
-
-#================================================================================#
-# requirements:
-# FastQC >= v0.11.8
-# MultiQC >= v0.9 in conda environment
-# READemption >= v0.4.3 in conda environment
-# Bedops >= v2.4.37 in conda environment
-# BEDtools >= v2.25.0
-#
-# requirements for R:
-# tidyverse
-# DESeq2
-# gplots
-# RColorBrewer
-#================================================================================#
-
 
 #================================================================================#
 # define all global variables
@@ -37,12 +20,9 @@ export path_raw_data="/nfs/agmikmol/Timon/raw_reads/2019-07-02_RNAseq_raw_wt_pnp
 export path_gff="/nfs/agmikmol/Timon/refseq/GCF_000012905.2_ASM1290v2_genomic_extended.gff"
 export path_genomic_fasta="/nfs/agmikmol/Timon/refseq/GCF_000012905.2_ASM1290v2_genomic.fa"
 
-# path to fastqc bin file
-export path_fastqc="/homes/dtspanka/Tools/FastQC"
-
 # unique regular expression pattern for replicates of both conditions, adjust according to filenames
-export var_strain1="pnp"
-export var_strain2="WT_neu"
+#export var_strain1="pnp"
+#export var_strain2="WT_neu"
 
 # variables for R analysis
 # save filenames of each read file (without file type extension!)
@@ -52,14 +32,21 @@ export strain1_rep3="L1802005_Nr27_pnp_exp_3"
 export strain2_rep1="L1802021_Nr43_WT_neu_1"
 export strain2_rep2="L1802022_Nr44_WT_neu_2"
 export strain2_rep3="L1802023_Nr45_WT_neu_3"
+export filetype=".fq"
+export compression=".gz"
+
+export strain1="pnp"
+export strain2="wt"
+
+
 export cutoff_counts="10"
 export cutoff_padj="0.05"
 export cutoff_log2FC="1"
-export condition1="pnp"
-export condition2="wt"
+#export condition1="pnp"
+#export condition2="wt"
 
 # number of cores to be used for computation
-export n_cores="12"
+export n_cores="24"
 
 # names of conda environments
 export conda_multiqc="multiqc"
@@ -67,13 +54,22 @@ export conda_trim_galore="trimming"
 export conda_reademption="rnaseq"
 export conda_bedops="bedops"
 
+# path to fastqc bin file
+export path_fastqc="/homes/dtspanka/Tools/FastQC"
+
 # name for READemption project folders
 export dir="READemption_PNPase"
+export coverage_style="last_base_only"
+
 
 # READemption settings
 #export input_libs_old="L1802021_Nr43_WT_neu_1_trimmed.fq,L1802022_Nr44_WT_neu_2_trimmed.fq,L1802023_Nr45_WT_neu_3_trimmed.fq,L1802003_Nr25_pnp_exp_1_trimmed.fq,L1802004_Nr26_pnp_exp_2_trimmed.fq,L1802005_Nr27_pnp_exp_3_trimmed.fq"
-export input_libs=$strain2_rep1"_trimmed.fq,"$strain2_rep2"_trimmed.fq,"$strain2_rep3"_trimmed.fq,"$strain1_rep1"_trimmed.fq,"$strain1_rep2"_trimmed.fq,"$strain1_rep3"_trimmed.fq"
-export input_conditions=$condition2","$condition2","$condition2","$condition1","$condition1","$condition1
+#export input_libs=$strain2_rep1"_trimmed.fq,"$strain2_rep2"_trimmed.fq,"$strain2_rep3"_trimmed.fq,"$strain1_rep1"_trimmed.fq,"$strain1_rep2"_trimmed.fq,"$strain1_rep3"_trimmed.fq"
+#export input_conditions=$condition2","$condition2","$condition2","$condition1","$condition1","$condition1
+
+export input_libs=$strain1_rep1"_trimmed"$filetype","$strain1_rep2"_trimmed"$filetype","$strain1_rep3"_trimmed"$filetype","$strain2_rep1"_trimmed"$filetype","$strain2_rep2"_trimmed"$filetype","$strain2_rep3"_trimmed"$filetype
+export input_conditions=$strain1","$strain1","$strain1","$strain2","$strain2","$strain2
+
 #================================================================================#
 
 
@@ -88,7 +84,7 @@ export input_conditions=$condition2","$condition2","$condition2","$condition1","
 # run READemption pipeline, this includes: mapping to reference genome, gene quantification,
 # generation of coverage files (full coverage and 3-prime coverage), basic visualisation
 # and basic DESeq2 analyis
-# Merged read files are generated and mapping as well as coverage files are computeted 
+# merged read files are generated and mapping as well as coverage files are computeted 
 # (full coverage and 3-prime coverage)
 #./reademption_complete.sh
 #================================================================================#
@@ -104,7 +100,7 @@ export input_conditions=$condition2","$condition2","$condition2","$condition1","
 #================================================================================#
 # perform 3prime end quantification in R
 echo "3prime end quantification started..."
-#Rscript 3prime_quantification.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $cutoff_counts $path_genomic_fasta
+#Rscript Xprime_quantification.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $cutoff_counts $path_genomic_fasta
 echo "quantification finished"
 #================================================================================#
 
@@ -112,7 +108,7 @@ echo "quantification finished"
 #================================================================================#
 # perform DESeq2 analysis to compute nucleotide wise fold changes
 echo "3prime DESeq analysis started..."
-#Rscript 3prime_DESeq.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $condition1 $condition2 $cutoff_log2FC $cutoff_padj $dir
+#Rscript Xprime_DESeq.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $strain1 $strain2 $cutoff_log2FC $cutoff_padj $dir
 #================================================================================#
 
 
@@ -127,6 +123,6 @@ echo "3prime DESeq analysis started..."
 #================================================================================#
 # statistic in R
 echo "R statistic analayis started..."
-#Rscript statistic.R $condition1 $condition2
+Rscript statistic.R $strain1 $strain2
 #================================================================================#
 

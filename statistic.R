@@ -3,7 +3,7 @@ library(tidyverse)
 args <- commandArgs()
 print(args)
 
-merged_bed <- read_tsv(paste0("./3prime_analysis/3prime_DESeq/deseq_",args[6],"_vs_",args[7],"_3prime_ends_sorted_merged.bed"), col_names = F) %>%
+merged_bed <- read_tsv(paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[6],"_vs_",args[7],"_Xprime_ends_sorted_merged.bed"), col_names = F) %>%
   dplyr::rename("chromosome" = "X1",
                 "start" = "X2",
                 "end" = "X3",
@@ -14,14 +14,14 @@ merged_bed <- read_tsv(paste0("./3prime_analysis/3prime_DESeq/deseq_",args[6],"_
 p_histogram_3ends_differential_log2FC <- merged_bed %>%
   ggplot(aes(log2FoldChange)) +
   geom_histogram() +
-  labs(subtitle = "differential 3'ends: count of all log2FC", x = "log2FC mutant vs. wildtype") +
+  labs(subtitle = "differential X'ends: count of all log2FC", x = "log2FC mutant vs. wildtype") +
   theme_bw()
 p_histogram_3ends_differential_log2FC
 
 p_histogram_3ends_length <- merged_bed %>%
   ggplot(aes(length)) +
   geom_histogram(binwidth = 3) +
-  labs(subtitle = "differential 3'ends: count of all lengths", x = "length of 3'end after bedtools:merge [nt]") +
+  labs(subtitle = "differential X'ends: count of all lengths", x = "length of X'end after bedtools:merge [nt]") +
   theme_bw()
 p_histogram_3ends_length
 
@@ -29,12 +29,12 @@ p_histogram_3ends_length_zoom <- merged_bed %>%
   filter(length <= 50) %>%
   ggplot(aes(length)) +
   geom_histogram(binwidth = 3) +
-  labs(subtitle = "differential 3'ends: count of all lengths - zoomed in", x = "length of 3'end after bedtools:merge [nt]") +
+  labs(subtitle = "differential X'ends: count of all lengths - zoomed in", x = "length of X'end after bedtools:merge [nt]") +
   theme_bw()
 p_histogram_3ends_length_zoom
 
 # read intersection file
-intersections <- read_tsv(paste0("./3prime_analysis/",args[6],"_vs_",args[7],"_intersection_ggf_3prime_ends.bed"), col_names = FALSE) %>%
+intersections <- read_tsv(paste0("./Xprime_analysis/",args[6],"_vs_",args[7],"_intersection_ggf_Xprime_ends.bed"), col_names = FALSE) %>%
   dplyr::rename("chromosome" = "X1",
                 "feature_start" = "X2",
                 "feature_end" = "X3",
@@ -46,7 +46,7 @@ intersections <- read_tsv(paste0("./3prime_analysis/",args[6],"_vs_",args[7],"_i
                 "log2FoldChange" = "X10") %>%
   select(chromosome, feature, start, end, log2FoldChange, feature_start, feature_end, attribute_name)
 
-# define UTR overlap: all 3'ends that do not intersect with provided gff have to be originated in UTRs
+# define UTR overlap: all X'ends that do not intersect with provided gff have to be originated in UTRs
 UTR_overlap <- left_join(merged_bed, intersections, by = "start") %>%
   filter(is.na(feature)) %>%
   dplyr::rename(
@@ -69,9 +69,9 @@ intersections_full <- rbind(intersections, UTR_overlap) %>%
 
 for (i in seq_along(1:nrow(intersections_full))) {
       if (intersections_full$log2FoldChange[i] > 0) {
-     intersections_full$change[i] <- "mutant enriched 3'ends"
+     intersections_full$change[i] <- "mutant enriched X'ends"
    } else {
-     intersections_full$change[i] <- "wildtype enriched 3'ends"
+     intersections_full$change[i] <- "wildtype enriched X'ends"
    }
 }
 
@@ -86,7 +86,7 @@ for (i in seq_along(1:nrow(intersections_full))) {
   }
 }
 
-write_csv2(intersections_full, "./3prime_analysis/intersections_full.csv")
+write_csv2(intersections_full, "./Xprime_analysis/intersections_full.csv")
  
 #### plots 
 alpha_boxplot <- 0
@@ -108,7 +108,7 @@ p_boxplot_3ends_abs <- ggplot(data = filter(intersections_genewise, feature != "
   geom_jitter(aes(color = feature), alpha = 0.5, width = 0.3) +
   geom_boxplot(outlier.alpha = FALSE, alpha = alpha_boxplot) +
   scale_y_continuous(breaks = seq(0,30,5)) +
-  labs(title = "absolute counts", y = "number of differential 3'ends per gene") +
+  labs(title = "absolute counts", y = "number of differential X'ends per gene") +
   theme_bw()
 p_boxplot_3ends_abs
 
@@ -116,14 +116,14 @@ p_boxplot_3ends_rel <- ggplot(data = filter(intersections_genewise, feature != "
   geom_jitter(aes(color = feature), alpha = 0.5, width = 0.3) +
   geom_boxplot(outlier.alpha = FALSE, alpha = alpha_boxplot) +
   scale_y_continuous(breaks = seq(0,90,10)) +
-  labs(title = "counts per kb", y = "number of differential 3'ends per gene per kb") +
+  labs(title = "counts per kb", y = "number of differential X'ends per gene per kb") +
   theme_bw()
 p_boxplot_3ends_rel
 
 p_boxplot_3ends_log2FC <- ggplot(intersections_full, aes(feature, log2FoldChange)) +
   geom_jitter(aes(color = feature), alpha = 0.5, width = 0.3) +
   geom_boxplot(outlier.alpha = FALSE, alpha = alpha_boxplot) +
-  labs(title = "all differential 3'ends") +
+  labs(title = "all differential X'ends") +
   theme_bw()
 p_boxplot_3ends_log2FC
 
@@ -131,17 +131,17 @@ p_histogram_3ends_differential_featurewise_abs <- ggplot(intersections_full, aes
   geom_histogram(aes(fill = feature), color = "black") +
   scale_x_continuous(breaks = seq(-10,10,5)) +
   facet_wrap(~ feature, nrow = 2) +
-  labs(title = "mutant vs. wt, detected differential 3'ends (absolute counts)") +
+  labs(title = "mutant vs. wt, detected differential X'ends (absolute counts)") +
   theme_bw()
 
 p_histogram_3ends_differential_featurewise_rel <- ggplot(intersections_full, aes(log2FoldChange)) +
   geom_histogram(aes(y = ..density.. , fill = feature), color = "black") +
   scale_x_continuous(breaks = seq(-10,10,5)) +
   facet_wrap(~ feature, nrow = 2) +
-  labs(title = "mutant vs. wt, detected differential 3'ends (relative counts)") +
+  labs(title = "mutant vs. wt, detected differential X'ends (relative counts)") +
   theme_bw()
 
-pdf("./3prime_analysis/figures_statistic.pdf", width = 6, height = 4)
+pdf("./Xprime_analysis/figures_statistic.pdf", width = 6, height = 4)
 p_histogram_3ends_differential_log2FC
 p_histogram_3ends_length
 p_histogram_3ends_length_zoom
@@ -152,7 +152,7 @@ p_histogram_3ends_differential_featurewise_abs
 p_histogram_3ends_differential_featurewise_rel
 dev.off()
 
-svg("./3prime_analysis/figures_statistic%02d.svg", width = 6, height = 4)
+svg("./Xprime_analysis/figures_statistic%02d.svg", width = 6, height = 4)
 p_histogram_3ends_differential_log2FC
 p_histogram_3ends_length
 p_histogram_3ends_length_zoom
@@ -164,29 +164,29 @@ p_histogram_3ends_differential_featurewise_rel
 dev.off()
 
 
-print("figures written to ./3prime_analysis/")
+print("figures written to ./Xprime_analysis/")
 
 
 #================================================================================#
 stats_general <- tibble("category" = 1:6,
                     "number" = 0)
 
-### all differential 3'ends (merged nucleotides)
-stats_general$category[1] <- "all differential 3'ends"
+### all differential X'ends (merged nucleotides)
+stats_general$category[1] <- "all differential X'ends"
 stats_general$number[1] <- nrow(merged_bed)
-stats_general$category[2] <- "mutant enriched 3'ends"
+stats_general$category[2] <- "mutant enriched X'ends"
 stats_general$number[2] <- merged_bed %>%
   filter(log2FoldChange > 0) %>%
   nrow()
-stats_general$category[3] <- "wildtype enriched 3'ends"
+stats_general$category[3] <- "wildtype enriched X'ends"
 stats_general$number[3] <- merged_bed %>%
   filter(log2FoldChange <= 0) %>%
   nrow()
 
 
 ### intersections: bedtools intersect counts
-# number of 3'ends per feature
-stats_general$category[4] <- "all differential 3'ends after bedtools:intersect analysis"
+# number of X'ends per feature
+stats_general$category[4] <- "all differential X'ends after bedtools:intersect analysis"
 stats_general$number[4] <- nrow(intersections_full)
 
 stats_intersection_featurewise <- intersections_full %>%
@@ -195,7 +195,7 @@ stats_intersection_featurewise <- intersections_full %>%
     count = n()
   )
 
-# number of genes with differential 3'ends. since there is no valid annotatioin for separate UTRs, all UTRs count as ONE feature!
+# number of genes with differential X'ends. since there is no valid annotatioin for separate UTRs, all UTRs count as ONE feature!
 stats_differential_genes <- intersections_full %>%
   group_by(change, attribute_name) %>%
   summarize(
@@ -203,23 +203,23 @@ stats_differential_genes <- intersections_full %>%
   ) %>%
   nrow()
 
-stats_general$category[5] <- "genes with mutant enriched 3'ends (all UTRs count as 1)"
+stats_general$category[5] <- "genes with mutant enriched X'ends (all UTRs count as 1)"
 stats_general$number[5] <- intersections_full %>%
-  filter(change == "mutant enriched 3'ends") %>%
+  filter(change == "mutant enriched X'ends") %>%
   group_by(attribute_name) %>%
   summarize(
     count = n()
   ) %>%
   nrow()
 
-stats_general$category[6] <- "genes with wildtype enriched 3'ends (all UTRs count as 1)"
+stats_general$category[6] <- "genes with wildtype enriched X'ends (all UTRs count as 1)"
 stats_general$number[6] <- intersections_full %>%
-  filter(change == "wildtype enriched 3'ends") %>%
+  filter(change == "wildtype enriched X'ends") %>%
   group_by(attribute_name) %>%
   summarize(
     count = n()
   ) %>%
   nrow()
 
-write_csv2(stats_general, "./3prime_analysis/stats_general.csv")
-print("general statistic information written to ./3prime_analysis/stats_general.csv")
+write_csv2(stats_general, "./Xprime_analysis/stats_general.csv")
+print("general statistic information written to ./Xprime_analysis/stats_general.csv")

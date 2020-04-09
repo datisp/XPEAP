@@ -17,9 +17,9 @@ strain2_rep3 <- args[11]
 cutoff_counts <- as.numeric(args[12])
 path_fasta <- args[13]
 
-### import bed files with read counts for 3prime ends
-print("importing 3prime bed files...")
-temp_list <- list.files(path = "./3prime_analysis/wig2bed", pattern = "*.bed", 
+### import bed files with read counts for Xprime ends
+print("importing Xprime bed files...")
+temp_list <- list.files(path = "./Xprime_analysis/wig2bed", pattern = "*.bed", 
                full.names = TRUE)
 
 read_id <- function(flnm) {
@@ -28,7 +28,7 @@ read_id <- function(flnm) {
 }
 
 bed_imported <-
-    list.files(path = "./3prime_analysis/wig2bed", pattern = "*.bed", 
+    list.files(path = "./Xprime_analysis/wig2bed", pattern = "*.bed", 
                full.names = TRUE) %>% 
     map_df(~read_id(.))
 
@@ -97,21 +97,21 @@ for (i in seq_along(chrom_name)){
 # create lists containing all bed file names from + / - strand
 print("generating file list for each strain...")
 files_for <- c(
-	paste0("./3prime_analysis/wig2bed/",strain1_rep1,"_trimmed_forward.wig.bed"),
-	paste0("./3prime_analysis/wig2bed/",strain1_rep2,"_trimmed_forward.wig.bed"),
-	paste0("./3prime_analysis/wig2bed/",strain1_rep3,"_trimmed_forward.wig.bed"),
-	paste0("./3prime_analysis/wig2bed/",strain2_rep1,"_trimmed_forward.wig.bed"),
-	paste0("./3prime_analysis/wig2bed/",strain2_rep2,"_trimmed_forward.wig.bed"),
-	paste0("./3prime_analysis/wig2bed/",strain2_rep3,"_trimmed_forward.wig.bed")
+	paste0("./Xprime_analysis/wig2bed/",strain1_rep1,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/",strain1_rep2,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/",strain1_rep3,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/",strain2_rep1,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/",strain2_rep2,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/",strain2_rep3,"_trimmed_forward.wig.bed")
 )
 
 files_rev <- c(
-        paste0("./3prime_analysis/wig2bed/",strain1_rep1,"_trimmed_reverse.wig.bed"),
-        paste0("./3prime_analysis/wig2bed/",strain1_rep2,"_trimmed_reverse.wig.bed"),
-        paste0("./3prime_analysis/wig2bed/",strain1_rep3,"_trimmed_reverse.wig.bed"),
-        paste0("./3prime_analysis/wig2bed/",strain2_rep1,"_trimmed_reverse.wig.bed"),
-        paste0("./3prime_analysis/wig2bed/",strain2_rep2,"_trimmed_reverse.wig.bed"),
-        paste0("./3prime_analysis/wig2bed/",strain2_rep3,"_trimmed_reverse.wig.bed")
+        paste0("./Xprime_analysis/wig2bed/",strain1_rep1,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/",strain1_rep2,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/",strain1_rep3,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/",strain2_rep1,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/",strain2_rep2,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/",strain2_rep3,"_trimmed_reverse.wig.bed")
 )
 
 files_for
@@ -143,7 +143,7 @@ prime_quanti_rev <- tibble(
   V5.y.y.y = double()
 )
 
-# join all 3prime counts of all bed - files with previously created template tibble which contains all nucleotide positions.
+# join all Xprime counts of all bed - files with previously created template tibble which contains all nucleotide positions.
 # one for + / - strand
 # replicates and strains columnwise
 
@@ -185,5 +185,5 @@ quantification_full <- prime_quanti_full %>%
 		"wt_biorep3" = "V5.y.y.y"
 	)
 
-print("exporting 3prime quantification file to ./3prime_analysis/3prime_DESeq/quantification_full.csv...")
-write_tsv(quantification_full, "./3prime_analysis/3prime_DESeq/quantification_full.csv")
+print("exporting Xprime quantification file to ./Xprime_analysis/Xprime_DESeq/quantification_full.csv...")
+write_tsv(quantification_full, "./Xprime_analysis/Xprime_DESeq/quantification_full.csv")

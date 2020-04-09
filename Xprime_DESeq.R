@@ -8,8 +8,8 @@ print(args)
 
 ### DESeq2
 print("starting DESeq2 analysis...")
-count_table_raw <- read_tsv("./3prime_analysis/3prime_DESeq/quantification_full.csv")
-#count_table_raw <- read.table("./3prime_analysis/3prime_DESeq/quantification_full.csv", skip=1, sep='\t')
+count_table_raw <- read_tsv("./Xprime_analysis/Xprime_DESeq/quantification_full.csv")
+#count_table_raw <- read.table("./Xprime_analysis/Xprime_DESeq/quantification_full.csv", skip=1, sep='\t')
 #count_table_raw <- prime_quanti_full
 position_metadata <- count_table_raw[3]
 count_table <- round(count_table_raw[,4:9])
@@ -21,11 +21,11 @@ dds <- DESeqDataSetFromMatrix(countData=count_table, colData=samples, design=~co
 dds <- DESeq(dds)
 
 ### plots
-pdf(paste0("./3prime_analysis/3prime_DESeq/PCA_3prime_ends_",args[12],"_vs_",args[13],".pdf"))
+pdf(paste0("./Xprime_analysis/Xprime_DESeq/PCA_Xprime_ends_",args[12],"_vs_",args[13],".pdf"))
 rld <- rlog(dds)
 print(plotPCA(rld, intgroup=c('condition')))
 
-svg(paste0("./3prime_analysis/3prime_DESeq/PCA_3prime_ends_",args[12],"_vs_",args[13],"%02d.svg"))
+svg(paste0("./Xprime_analysis/Xprime_DESeq/PCA_Xprime_ends_",args[12],"_vs_",args[13],"%02d.svg"))
 rld <- rlog(dds)
 print(plotPCA(rld, intgroup=c('condition')))
 
@@ -39,8 +39,8 @@ dds_result <- results(dds, contrast=c('condition',args[12], args[13]))
 prime_deseq <- cbind(count_table_raw, dds_result)
 prime_deseq <- as.tibble(prime_deseq)
 
-print(paste0("writing raw DESeq2 analysis file to ./3prime_analysis/3prime_DESeq/deseq_",args[12],"_vs_",args[13],"_3prime_ends.csv ... "))
-write_tsv(prime_deseq, paste0("./3prime_analysis/3prime_DESeq/deseq_",args[12],"_vs_",args[13],"_3prime_ends.csv"))
+print(paste0("writing raw DESeq2 analysis file to ./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends.csv ... "))
+write_tsv(prime_deseq, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends.csv"))
 print("check")
 
 ### cutoff variables
@@ -51,8 +51,8 @@ prime_deseq_filtered <- prime_deseq %>%
   filter(padj <= cutoff_padj) %>%
   filter(sqrt(log2FoldChange^2) >= cutoff_log2FC)
 
-print(paste0("writing filtered DESeq2 analysis file to ./3prime_analysis/3prime_DESeq/deseq_",args[12],"_vs_",args[13],"_3prime_ends_filtered.csv ... "))
-write_tsv(prime_deseq_filtered, paste0("./3prime_analysis/3prime_DESeq/deseq_",args[12],"_vs_",args[13],"_3prime_ends_filtered.csv"))
+print(paste0("writing filtered DESeq2 analysis file to ./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends_filtered.csv ... "))
+write_tsv(prime_deseq_filtered, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends_filtered.csv"))
 print("check")
 
 
@@ -66,7 +66,7 @@ prime_bed <- prime_deseq_filtered %>%
   select(chromosome, position, position_end, ID, log2FoldChange, strand)
 
 print("converting filtered DESeq2 analysis file to BED format...")
-write_tsv(prime_bed, paste0("./3prime_analysis/3prime_DESeq/deseq_",args[12],"_vs_",args[13],"_3prime_ends.bed"), col_names = FALSE)
+write_tsv(prime_bed, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends.bed"), col_names = FALSE)
 print("check")
 
 print("generating optimized BED file instead of GFF for further intersection analysis")
@@ -74,5 +74,5 @@ filename_deseq <- paste0("./",args[16],"/output/deseq/deseq_with_annotations/des
 annotation_bed <- read_tsv(filename_deseq, skip = 2) %>%
   filter(`Orientation of counted reads relative to the strand location of the annotation` == "sense") %>%
   select("Sequence name", "Start", "End", "Attributes", "Feature")
-write_tsv(annotation_bed, "./3prime_analysis/annotation.bed", col_names = FALSE)
+write_tsv(annotation_bed, "./Xprime_analysis/annotation.bed", col_names = FALSE)
 print("finished")
