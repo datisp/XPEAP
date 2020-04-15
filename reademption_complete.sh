@@ -15,7 +15,7 @@ date > ./$dir/log_align
 date > ./$dir/runtime
 
 echo "copying trimmed read files..."
-cp ./reads_trimmed/*trimmed$filetype ./$dir/input/reads/
+cp ./reads_trimmed/*trimmed.fq ./$dir/input/reads/
 cp $path_genomic_fasta ./$dir/input/reference_sequences/ref_seq.fa
 cp $path_gff ./$dir/input/annotations/annotation.gff
 
@@ -58,6 +58,7 @@ rm ./$dir/input/reads/*
 echo "merging trimmed read files..."
 # folder structure merged files
 dir_merged=$dir"_merged"
+filetype=".fq"
 reademption create $dir_merged
 cp ./reads_trimmed/*trimmed$filetype ./$dir_merged/input/reads/
 

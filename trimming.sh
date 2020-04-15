@@ -34,7 +34,7 @@ trim_galore -o ./reads_trimmed -q 10 --length 15 -j 8 ./reads_raw/*$compression 
 
 # perform FastQC for trimmed reads
 echo "performing FastQC analysis for trimmed reads..."
-$path_fastqc/fastqc ./reads_trimmed/*$filetype$compression
+$path_fastqc/fastqc ./reads_trimmed/*.fq$compression
 
 # activate conda for MultiQC analysis
 source activate $conda_multiqc
@@ -43,7 +43,7 @@ source activate $conda_multiqc
 multiqc ./reads_trimmed/*fastqc.zip -o ./reads_trimmed/
 
 # READemption only allows unzipped fastq-files
-gunzip ./reads_trimmed/*$filetype$compression
+gunzip ./reads_trimmed/*$compression
 
 echo "script_trimming.sh finished."
 date
