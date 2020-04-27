@@ -9,47 +9,47 @@ source activate $conda_reademption
 #bash
 #source activate rnaseq
 
-reademption create $dir
+##reademption create $dir
 
 date > ./$dir/log_align
 date > ./$dir/runtime
 
 echo "copying trimmed read files..."
-cp ./reads_trimmed/*trimmed.fq ./$dir/input/reads/
-cp $path_genomic_fasta ./$dir/input/reference_sequences/ref_seq.fa
-cp $path_gff ./$dir/input/annotations/annotation.gff
+##cp ./reads_trimmed/*trimmed.fq ./$dir/input/reads/
+##cp $path_genomic_fasta ./$dir/input/reference_sequences/ref_seq.fa
+##cp $path_gff ./$dir/input/annotations/annotation.gff
 
 echo "running READemption align..."
 # READemption align
-reademption align -p $n_cores --progress --fastq ./$dir &>> ./$dir/log
+##reademption align -p $n_cores --progress --fastq ./$dir &>> ./$dir/log
 
 echo "running READemption gene quantification"
 # READemption gene quanti
-date > ./$dir/log_gene_quanti
-reademption gene_quanti -p $n_cores --features CDS,tRNA,rRNA,tmRNA,ncRNA,sRNA ./$dir &>> ./$dir/log_gene_quanti
+##date > ./$dir/log_gene_quanti
+##reademption gene_quanti -p $n_cores --features CDS,tRNA,rRNA,tmRNA,ncRNA,sRNA ./$dir &>> ./$dir/log_gene_quanti
 
 
 echo "DESeq2..."
-date > ./$dir/log_deseq
-reademption deseq --libs $input_libs --conditions $input_conditions ./$dir &>> ./$dir/log_deseq
+##date > ./$dir/log_deseq
+##reademption deseq --libs $input_libs --conditions $input_conditions ./$dir &>> ./$dir/log_deseq
 
 # READemption visualisation
-reademption viz_deseq ./$dir
-reademption coverage -p $n_cores ./$dir
+##reademption viz_deseq ./$dir
+##reademption coverage -p $n_cores ./$dir
 
 # rename coverage folder
-mv ./$dir/output/coverage ./$dir/output/coverage_full
+##mv ./$dir/output/coverage ./$dir/output/coverage_full
 
 # generate new folder structure for Xprime mapping
-mkdir -p ./$dir/output/coverage/{coverage-raw,coverage-tnoar_mil_normalized,coverage-tnoar_min_normalized}
+##mkdir -p ./$dir/output/coverage/{coverage-raw,coverage-tnoar_mil_normalized,coverage-tnoar_min_normalized}
 
 echo "running X'mapping for replicates..."
 # generate Xprime mapping
-reademption coverage -p $n_cores --coverage_style $coverage_style ./$dir
-mv ./$dir/output/coverage ./$dir/output/coverage_Xprime
+##reademption coverage -p $n_cores --coverage_style $coverage_style ./$dir
+##mv ./$dir/output/coverage ./$dir/output/coverage_Xprime
 
 #remove dublicated read files to save disc space
-rm ./$dir/input/reads/*
+##rm ./$dir/input/reads/*
 ###echo "READemption analysis for replicate files finished"
 
 #================================================================================#
