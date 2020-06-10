@@ -41,7 +41,7 @@ XPEAP provides the full RNA sequencing analysis package with a focus on X'end an
   * PDF file with various plots, such as distribution of fold changes and enriched features, called `figures_statistic.pdf`. Also avaliable in SVG file format.
 
 ### Structure
-`XPEAP.sh` includes seven other scripts, which are sequentially executed after having started `XPEAP.sh`.
+`XPEAP.sh` includes eight other scripts, which are sequentially executed after having started `XPEAP.sh`.
 
 ![XPEAP structure](structure_simple.svg)
 
