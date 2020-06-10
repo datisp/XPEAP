@@ -41,7 +41,7 @@ XPEAP provides the full RNA sequencing analysis package with a focus on X'end an
   * PDF file with various plots, such as distribution of fold changes and enriched features, called `figures_statistic.pdf`. Also avaliable in SVG file format.
 
 ### Structure
-`XPEAP.sh` includes seven other scripts, which are sequentially executed after having started `XPEAP.sh`.
+`XPEAP.sh` includes eight other scripts, which are sequentially executed after having started `XPEAP.sh`.
 
 ![XPEAP structure](structure_simple.svg)
 
@@ -109,7 +109,7 @@ The variables for the R analysis are predefined and worked perfectly fine for my
 * `cutoff_counts="10"`: This variable defines the cutoff for the minimal required read number mapped per X'end and helps to dismiss false positive results. Can be increased by higher sequencing depth.
 * `cutoff_padj="0.05"`: cutoff for adjusted *p*-value (Benjamini-Hochberg algorithm, computed using DESeq2), all X'ends with an equal or lower adj. *p*-value are kept for further analysis
 * `cutoff_log2FC="1"`: cutoff for minimal required log2 fold change comparing strain1 and strain2 (computed using DESeq2)
-
+* `export cutoff_ratio="0.05"`: minimal required ratio for 3'-end coverage / full coverage
 
 Afterwards simply execute `./XPEAP.sh` and enjoy your coffee.
 
@@ -159,6 +159,7 @@ export n_cores="24" # number of cores to be used for computation
 export cutoff_counts="10"
 export cutoff_padj="0.05"
 export cutoff_log2FC="1"
+export cutoff_ratio="0.05"
 ```
 
 ## A more detailed view on the pipeline
