@@ -50,6 +50,7 @@ export conda_bedops="bedops"
 export cutoff_counts="10"
 export cutoff_padj="0.05"
 export cutoff_log2FC="1"
+export cutoff_ratio="0.05"
 
 # READemption settings:
 export n_cores="24" # number of cores to be used for computation
@@ -91,6 +92,7 @@ export input_conditions=$strain1","$strain1","$strain1","$strain2","$strain2","$
 # perform Xprime end quantification in R
 echo "Xprime end quantification started..."
 Rscript Xprime_quantification.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $cutoff_counts $path_genomic_fasta
+Rscript Xprime_quantification_full.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $strain2_rep2 $strain2_rep3 $cutoff_counts $path_genomic_fasta $cutoff_ratio
 echo "quantification finished"
 #================================================================================#
 
