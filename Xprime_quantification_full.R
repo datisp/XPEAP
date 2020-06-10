@@ -16,10 +16,11 @@ strain2_rep2 <- args[10]
 strain2_rep3 <- args[11]
 cutoff_counts <- as.numeric(args[12])
 path_fasta <- args[13]
+cutoff_ratio <- args[14]
 
 ### import bed files with read counts for Xprime ends
 print("importing Xprime bed files...")
-temp_list <- list.files(path = "./Xprime_analysis/wig2bed/coverage_Xprime", pattern = "*.bed", 
+temp_list <- list.files(path = "./Xprime_analysis/wig2bed/coverage_full", pattern = "*.bed", 
                full.names = TRUE)
 
 read_id <- function(flnm) {
@@ -28,7 +29,7 @@ read_id <- function(flnm) {
 }
 
 bed_imported <-
-    list.files(path = "./Xprime_analysis/wig2bed/coverage_Xprime", pattern = "*.bed", 
+    list.files(path = "./Xprime_analysis/wig2bed/coverage_full", pattern = "*.bed", 
                full.names = TRUE) %>% 
     map_df(~read_id(.))
 
@@ -93,25 +94,24 @@ for (i in seq_along(chrom_name)){
   gene_quanti_reverse <- rbind(gene_quanti_reverse, tbl_tmp)
 }
 
-
 # create lists containing all bed file names from + / - strand
 print("generating file list for each strain...")
 files_for <- c(
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep1,"_trimmed_forward.wig.bed"),
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep2,"_trimmed_forward.wig.bed"),
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep3,"_trimmed_forward.wig.bed"),
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep1,"_trimmed_forward.wig.bed"),
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep2,"_trimmed_forward.wig.bed"),
-	paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep3,"_trimmed_forward.wig.bed")
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep1,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep2,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep3,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep1,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep2,"_trimmed_forward.wig.bed"),
+	paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep3,"_trimmed_forward.wig.bed")
 )
 
 files_rev <- c(
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep1,"_trimmed_reverse.wig.bed"),
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep2,"_trimmed_reverse.wig.bed"),
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain1_rep3,"_trimmed_reverse.wig.bed"),
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep1,"_trimmed_reverse.wig.bed"),
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep2,"_trimmed_reverse.wig.bed"),
-        paste0("./Xprime_analysis/wig2bed/coverage_Xprime/",strain2_rep3,"_trimmed_reverse.wig.bed")
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep1,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep2,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain1_rep3,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep1,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep2,"_trimmed_reverse.wig.bed"),
+        paste0("./Xprime_analysis/wig2bed/coverage_full/",strain2_rep3,"_trimmed_reverse.wig.bed")
 )
 
 files_for
@@ -177,18 +177,70 @@ prime_quanti_full <- filter(prime_quanti_full, !((is.na(V5.x)) & (is.na(V5.y)) &
 
 quantification_full <- prime_quanti_full %>%
 	dplyr::rename(
-		"mutant_biorep1" = "V5.x",
-		"mutant_biorep2" = "V5.y",
-		"mutant_biorep3" = "V5.x.x",
-		"wt_biorep1" = "V5.y.y",
-		"wt_biorep2" = "V5.x.x.x",
-		"wt_biorep3" = "V5.y.y.y"
+		"mutant_biorep1_full" = "V5.x",
+		"mutant_biorep2_full" = "V5.y",
+		"mutant_biorep3_full" = "V5.x.x",
+		"wt_biorep1_full" = "V5.y.y",
+		"wt_biorep2_full" = "V5.x.x.x",
+		"wt_biorep3_full" = "V5.y.y.y"
+	)
+print("head of quantification full")
+head(quantification_full)
+
+### DEBUGGING
+write_tsv(quantification_full, "./Xprime_analysis/Xprime_DESeq/quantification_full_only.csv")
+
+quantification_Xprime <- read_tsv("./Xprime_analysis/Xprime_DESeq/quantification_full.csv") %>%
+	select(1:9)
+
+print("head quantification_Xprime")
+head(quantification_Xprime)
+print("nrow quantification_Xprime")
+nrow(quantification_Xprime)
+
+combined_quanti_for <- NULL
+var_strand <- "+"
+for (i in seq_along(chrom_name)){
+  tmp_Xprime <- filter(quantification_Xprime, (chromosome == chrom_name[i]) &( strand == var_strand))
+  tmp_full <- filter(quantification_full, (chromosome == chrom_name[i]) & ( strand == var_strand)) %>%
+    select(3:9)
+  tmp_combined <- inner_join(tmp_Xprime, tmp_full, by = "position")
+  combined_quanti_for <- rbind(combined_quanti_for, tmp_combined)
+}
+
+combined_quanti_rev <- NULL
+var_strand <- "-"
+for (i in seq_along(chrom_name)){
+  tmp_Xprime <- filter(quantification_Xprime, (chromosome == chrom_name[i]) &( strand == var_strand))
+  tmp_full <- filter(quantification_full, (chromosome == chrom_name[i]) & ( strand == var_strand)) %>%
+    select(3:9)
+  tmp_combined <- inner_join(tmp_Xprime, tmp_full, by = "position")
+  combined_quanti_rev <- rbind(combined_quanti_rev, tmp_combined)
+}
+
+quantification_Xprime_full <- rbind(combined_quanti_for, combined_quanti_rev)
+
+print("head quantification_Xprime_full after inner_join")
+head(quantification_Xprime_full)
+
+quantification_Xprime_full <- quantification_Xprime_full %>%
+	mutate(
+		ratio_mut_1 = mutant_biorep1 / mutant_biorep1_full,
+                ratio_mut_2 = mutant_biorep2 / mutant_biorep2_full,
+                ratio_mut_3 = mutant_biorep3 / mutant_biorep3_full,
+                ratio_wt_1 = wt_biorep1 / wt_biorep1_full,
+                ratio_wt_2 = wt_biorep2 / wt_biorep2_full,
+                ratio_wt_3 = wt_biorep3 / wt_biorep3_full
 	)
 
-head(quantification_full)
+print("head quantification_Xprime_full after mutating")
+head(quantification_Xprime_full)
+nrow(quantification_Xprime_full)
+
+quantification_full <- quantification_Xprime_full %>%
+	filter((ratio_mut_1 >= cutoff_ratio) | (ratio_mut_2 >= cutoff_ratio) | (ratio_mut_3 >= cutoff_ratio) | (ratio_wt_1 >= cutoff_ratio) | (ratio_wt_2 >= cutoff_ratio) | (ratio_wt_3 >= cutoff_ratio))
+
+nrow(quantification_full)
 
 print("exporting Xprime quantification file to ./Xprime_analysis/Xprime_DESeq/quantification_full.csv...")
 write_tsv(quantification_full, "./Xprime_analysis/Xprime_DESeq/quantification_full.csv")
-
-###DEBUGGING
-write_tsv(quantification_full, "./Xprime_analysis/Xprime_DESeq/quantification_Xprime_only.csv")

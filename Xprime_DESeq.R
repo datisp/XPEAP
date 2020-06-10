@@ -55,7 +55,6 @@ print(paste0("writing filtered DESeq2 analysis file to ./Xprime_analysis/Xprime_
 write_tsv(prime_deseq_filtered, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends_filtered.csv"))
 print("check")
 
-
 ### add identifier
 prime_deseq_filtered <- prime_deseq_filtered %>%
   add_column(ID = 1:nrow(prime_deseq_filtered))
@@ -63,7 +62,7 @@ prime_deseq_filtered <- prime_deseq_filtered %>%
 ### convert deseq file to bed file
 prime_bed <- prime_deseq_filtered %>%
   mutate(position_end = position +1) %>%
-  select(chromosome, position, position_end, ID, log2FoldChange, strand)
+  select(chromosome, position, position_end, ID, log2FoldChange, strand, baseMean)
 
 print("converting filtered DESeq2 analysis file to BED format...")
 write_tsv(prime_bed, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[12],"_vs_",args[13],"_Xprime_ends.bed"), col_names = FALSE)

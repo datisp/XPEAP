@@ -8,9 +8,63 @@ merged_bed <- read_tsv(paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[6],"_
                 "start" = "X2",
                 "end" = "X3",
                 "strand" = "X4",
-                "log2FoldChange" = "X5") %>%
+                "log2FoldChange" = "X5",
+		"baseMean" = "X6") %>%
   mutate(length = end - start)
 
+# group all detected and valid X'-ends in clusters according to their proximity
+cluster_var <- 1
+windowsize <- 25
+
+merged_bed_cluster <- merged_bed %>%
+  add_column(
+    cluster_ID = 1,
+    significance = NA,
+    Xprime_end_ID = 1:nrow(merged_bed)
+  )
+
+for (i in (seq_along(1:(nrow(merged_bed_cluster)-1)))) {
+  if ((merged_bed_cluster$end[i] + windowsize) >= merged_bed_cluster$start[i+1]) {
+    merged_bed_cluster$cluster_ID[i+1] <- cluster_var
+  } else {
+    cluster_var <- (cluster_var + 1)
+    merged_bed_cluster$cluster_ID[i+1] <- cluster_var
+  }
+}
+
+# find maximum baseMean value in each cluster
+# mark corresponding Xprime end as "major" Xprime end
+cluster_no <- length(unique(merged_bed_cluster$cluster_ID))
+for (i in seq_along(1:cluster_no)) {
+  cluster_tmp <- filter(merged_bed_cluster, cluster_ID == i)
+  coverage_max <- max(cluster_tmp$baseMean)
+  cluster_max <- filter(cluster_tmp, baseMean == coverage_max)
+  for (j in seq_along(1:nrow(merged_bed_cluster))) {
+    if (merged_bed_cluster$Xprime_end_ID[j] == cluster_max$Xprime_end_ID) {
+      merged_bed_cluster$significance[j] <- "major"
+    } else {
+      NULL
+    }
+  }
+}
+
+# mark all other Xprime ends as "minor"
+for (i in (seq_along(1:nrow(merged_bed_cluster)))) {
+  if (is.na(merged_bed_cluster$significance[i])) {
+    merged_bed_cluster$significance[i] <- "minor"
+  } else {
+    NULL
+  }
+}
+
+# filter all major Xprime ends and save output
+merged_bed_major <- merged_bed_cluster %>%
+	filter(significance == "major")
+head(merged_bed_major)
+print(paste0("writing BED file containing all MAJOR X'-ends to ./Xprime_analysis/Xprime_DESeq/deseq_",args[6],"_vs_",args[7],"_Xprime_ends_sorted_merged_major.bed"))
+write_tsv(merged_bed_major, paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[6],"_vs_",args[7],"_Xprime_ends_sorted_merged_major.bed"), col_names = F)
+
+# basic summary plots
 p_histogram_3ends_differential_log2FC <- merged_bed %>%
   ggplot(aes(log2FoldChange)) +
   geom_histogram() +
@@ -94,7 +148,6 @@ alpha_boxplot <- 0
 p_histogram_3ends_differential <-  intersections_full %>%
   ggplot(aes(feature, fill = change)) +
   geom_histogram(aes(), stat = "count", position = position_dodge(), color = "black") +
-#  scale_y_continuous(breaks = seq(0, 600, 100), limits = c(0,600)) +
   theme_bw()
 p_histogram_3ends_differential
 
@@ -107,7 +160,6 @@ intersections_genewise <- intersections_full %>%
 p_boxplot_3ends_abs <- ggplot(data = filter(intersections_genewise, feature != "UTR"), aes(feature, count)) +
   geom_jitter(aes(color = feature), alpha = 0.5, width = 0.3) +
   geom_boxplot(outlier.alpha = FALSE, alpha = alpha_boxplot) +
-  scale_y_continuous(breaks = seq(0,30,5)) +
   labs(title = "absolute counts", y = "number of differential X'ends per gene") +
   theme_bw()
 p_boxplot_3ends_abs
@@ -115,7 +167,6 @@ p_boxplot_3ends_abs
 p_boxplot_3ends_rel <- ggplot(data = filter(intersections_genewise, feature != "UTR"), aes(feature, count_per_kb)) +
   geom_jitter(aes(color = feature), alpha = 0.5, width = 0.3) +
   geom_boxplot(outlier.alpha = FALSE, alpha = alpha_boxplot) +
-  scale_y_continuous(breaks = seq(0,90,10)) +
   labs(title = "counts per kb", y = "number of differential X'ends per gene per kb") +
   theme_bw()
 p_boxplot_3ends_rel

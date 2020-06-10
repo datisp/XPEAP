@@ -11,7 +11,8 @@ bedtools sort -i ./Xprime_analysis/Xprime_DESeq/$filename_input > ./Xprime_analy
 echo "merging all positions within a distance of 3 nucleotides"
 echo "mean value of score (log2FC) ist computed and saved in colum 5"
 echo "strandedness is forced"
-bedtools merge -s -d 3 -c 5 -o mean -i ./Xprime_analysis/Xprime_DESeq/$filename_sorted > ./Xprime_analysis/Xprime_DESeq/$filename_merged
+echo "sum of all baseMeans is computed and saved in colum 6"
+bedtools merge -s -d 3 -c 5,7 -o mean,sum -i ./Xprime_analysis/Xprime_DESeq/$filename_sorted > ./Xprime_analysis/Xprime_DESeq/$filename_merged
 
 echo "performing intersection analysis between annotation.gff and deseq_3prime_merged.bed"
 bedtools intersect -wo -a ./Xprime_analysis/annotation.bed -b ./Xprime_analysis/Xprime_DESeq/$filename_merged > ./Xprime_analysis/$filename_intersection
