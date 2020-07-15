@@ -1,7 +1,7 @@
 # XPEAP - **X P**rime **E**nd **A**nalysis **P**ipeline
 
 ## About
-The XPEAP (**X P**rime **E**nd **A**nalysis **P**ipeline) allows the detection of RNA 5' or 3'-ends in procariotic NGS data. It is written as an easy to use solution which covers every step from initial raw data processing to quantification and the final statistical analysis. The basic idea behind this project is to compare RNA sequencing data from two bacterial strains, each in triplicates, and to identify differential 5'/3'-ends. You are a microbiologist focused on RNA research and want to compare the presence and abundance of RNA 5'/3'-ends in your wildtype strain and an RNAse deficient strain? If that's your research questions, XPEAP is the tool you need!
+The XPEAP (**X P**rime **E**nd **A**nalysis **P**ipeline) allows the detection of RNA 5'- or 3'-ends in procariotic NGS data. It is written as an easy to use solution which covers every step from initial raw data processing to quantification and the final statistical analysis. The basic idea behind this project is to compare RNA sequencing data from two bacterial strains, each in triplicates, and to identify differential 5'/3'-ends. You are a microbiologist focused on RNA research and want to compare the presence and abundance of RNA 5'/3'-ends in your wildtype strain and an RNAse deficient strain? If that's your research questions, XPEAP is the tool you need!
 
 ### Which input files do I need?
 
@@ -16,10 +16,10 @@ Every step from A to Z is covered:
 * quality and adapter trimming of raw reads (Trim Galore)
 * quality control of trimmed reads (FastQC and MultiQC)
 * alignments (READemption)
-* coverage of full alignments and X'ends (READemption)
+* coverage of full alignments and X'-ends (READemption)
 * DESeq2 analysis (READemption)
 * DESeq2 based determination of differential X'ends
-* intersection of X'ends and annotation file
+* intersection of X'-ends and annotation file
 * statistical analysis, i.e. How many differential X'ends were detected? Do they occur in distinct features? etc.
 * visualization of all important results
 
@@ -102,7 +102,7 @@ The usage is super simple: Having finished the previous downloading step, just m
 * READemption variables:
   * `dir="my_READemption_project"`: name for READemption project folders
   * `n_cores="12"`: number of cores to be used for READemption computation
-  * `coverage_style="last_base_only"`: Here you can decide, wether you want to analyze the 5' or 3'-ends, options are `"first_base_only"` and `"last_base_only"`
+  * `coverage_style="last_base_only"`: Here you can decide, wether you want to analyze the 5'- or 3'-ends, options are `"first_base_only"` and `"last_base_only"`
 
 The variables for the R analysis are predefined and worked perfectly fine for my data, but you may change them for your own analysis:
 
