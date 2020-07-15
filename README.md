@@ -1,7 +1,7 @@
 # XPEAP - **X P**rime **E**nd **A**nalysis **P**ipeline
 
 ## About
-The XPEAP (**X P**rime **E**nd **A**nalysis **P**ipeline) allows the detection of RNA 5'- or 3'-ends in procariotic NGS data. It is written as an easy to use solution which covers every step from initial raw data processing to quantification and the final statistical analysis. The basic idea behind this project is to compare RNA sequencing data from two bacterial strains, each in triplicates, and to identify differential 5'/3'-ends. You are a microbiologist focused on RNA research and want to compare the presence and abundance of RNA 5'/3'-ends in your wildtype strain and an RNAse deficient strain? If that's your research questions, XPEAP is the tool you need!
+The XPEAP (**X P**rime **E**nd **A**nalysis **P**ipeline) allows the detection of RNA 5'- or 3'-ends in prokaryotic NGS data. It is written as an easy to use solution which covers every step from initial raw data processing to quantification and the final statistical analysis. The basic idea behind this project is to compare RNA sequencing data from two bacterial strains, each in triplicates, and to identify differential 5'/3'-ends. You are a microbiologist focused on RNA research and want to compare the presence and abundance of RNA 5'/3'-ends in your wildtype strain and an RNAse deficient strain? If that's your research questions, XPEAP is the tool you need!
 
 ### Which input files do I need?
 
