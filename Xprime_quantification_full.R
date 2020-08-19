@@ -45,9 +45,6 @@ bed_imported <- bed_imported %>%
   filter(V5 >= cutoff_counts)
 
 ### define variables
-#chrom_name <- c("NC_007493.2", "NC_007494.2", "NC_009007.1", "NC_007488.2", "NC_007489.1", "NC_007490.2", "NC_009008.1")
-#chrom_length <- c(3188524, 943018, 114045, 114179, 105284, 100827, 37100)
-
 seq_genome <- readDNAStringSet(path_fasta)
 chrom_name <- NULL
 chrom_length <- 0

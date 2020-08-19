@@ -33,7 +33,7 @@ for (i in (seq_along(1:(nrow(merged_bed_cluster)-1)))) {
 }
 
 # find maximum baseMean value in each cluster
-# mark corresponding Xprime end as "major" Xprime end
+# mark corresponding X'-end as "major" Xprime end
 cluster_no <- length(unique(merged_bed_cluster$cluster_ID))
 for (i in seq_along(1:cluster_no)) {
   cluster_tmp <- filter(merged_bed_cluster, cluster_ID == i)
@@ -48,7 +48,7 @@ for (i in seq_along(1:cluster_no)) {
   }
 }
 
-# mark all other Xprime ends as "minor"
+# mark all other X'-ends as "minor"
 for (i in (seq_along(1:nrow(merged_bed_cluster)))) {
   if (is.na(merged_bed_cluster$significance[i])) {
     merged_bed_cluster$significance[i] <- "minor"
@@ -57,7 +57,7 @@ for (i in (seq_along(1:nrow(merged_bed_cluster)))) {
   }
 }
 
-# filter all major Xprime ends and save output
+# filter all major X'-ends and save output
 merged_bed_major <- merged_bed_cluster %>%
 	filter(significance == "major")
 head(merged_bed_major)
@@ -100,7 +100,7 @@ intersections <- read_tsv(paste0("./Xprime_analysis/",args[6],"_vs_",args[7],"_i
                 "log2FoldChange" = "X10") %>%
   select(chromosome, feature, start, end, log2FoldChange, feature_start, feature_end, attribute_name)
 
-# define UTR overlap: all X'ends that do not intersect with provided gff have to be originated in UTRs
+# define UTR overlap: all X'-ends that do not intersect with provided gff have to be originated in UTRs
 UTR_overlap <- left_join(merged_bed, intersections, by = "start") %>%
   filter(is.na(feature)) %>%
   dplyr::rename(

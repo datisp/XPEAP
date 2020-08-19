@@ -2,7 +2,7 @@
 
 #conversion wig2bed
 
-echo "script_wig2bed.sh started..."
+echo "wig2bed.sh started..."
 date
 echo "..."
 
@@ -27,5 +27,5 @@ for f in *.wig; do
 	wig2bed < $f > ../../../../$dir_out/coverage_full/$f".bed";
 done
 
-echo "script_wig2bed.sh finished."
+echo "wig2bed.sh finished."
 date
