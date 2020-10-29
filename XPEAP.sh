@@ -107,7 +107,7 @@ Rscript Xprime_DESeq.R $strain1_rep1 $strain1_rep2 $strain1_rep3 $strain2_rep1 $
 #================================================================================#
 # BEDtools operations:
 # sort filtered output from previous DESeq2 analysis
-# merge all X'end  within a distance of 3 nucleotides
+# merge all X' ends  within a distance of 3 nucleotides
 # compute intersection with annotation file
 ./bedtools.sh
 #================================================================================#
