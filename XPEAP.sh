@@ -39,7 +39,7 @@ export filetype=".fq"
 export compression=".gz"
 
 # path to fastqc bin file
-export path_fastqc="/homes/dtspanka/Tools/FastQC"
+export path_fastqc="/homes/user/Tools/FastQC"
 
 # names of conda environments
 export conda_multiqc="multiqc"
