@@ -14,7 +14,8 @@ dir_out=Xprime_analysis/wig2bed
 source activate $conda_bedops
 
 # transform Xprime coverage
-cd $dir/output/coverage_Xprime/coverage-raw
+cd $dir/output/coverage_Xprime/coverage-tnoar_min_normalized  #cd $dir/output/coverage_Xprime/coverage-raw
+rename 's/_div_by_[0-9]*.[0-9]_multi_by_[0-9]*.[0-9]_/_/' *.wig #edit 2020-10-30
 for f in *.wig; do
 	wig2bed < $f > ../../../../$dir_out/coverage_Xprime/$f".bed";
 done
@@ -22,7 +23,8 @@ done
 cd ../..
 
 # transform full coverage
-cd coverage_full/coverage-raw
+cd coverage_full/coverage-tnoar_min_normalized  #cd coverage_full/coverage-raw
+rename 's/_div_by_[0-9]*.[0-9]_multi_by_[0-9]*.[0-9]_/_/' *.wig #edit 2020-10-30
 for f in *.wig; do
 	wig2bed < $f > ../../../../$dir_out/coverage_full/$f".bed";
 done

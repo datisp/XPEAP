@@ -128,6 +128,8 @@ prime_quanti_for <- tibble(
   V5.y.y.y = double()
 )
 
+head(prime_quanti_for)
+
 prime_quanti_rev <- tibble(
   chromosome = character(),
   strand = character(),
@@ -139,6 +141,8 @@ prime_quanti_rev <- tibble(
   V5.x.x.x = double(),
   V5.y.y.y = double()
 )
+
+head(prime_quanti_rev)
 
 # join all Xprime counts of all bed - files with previously created template tibble which contains all nucleotide positions.
 # one for + / - strand
@@ -166,6 +170,8 @@ prime_quanti_rev <- rbind(prime_quanti_rev, tmp_bed)
 
 # bind prime_quanti_for and _rev to one tibble
 prime_quanti_full <- rbind(prime_quanti_for, prime_quanti_rev)
+
+head(prime_quanti_full)
 
 # discard all NA-rows and substitute all remaining NA with 1 (pseudo count) to enable downstream DESeq2 analysis
 prime_quanti_full <- filter(prime_quanti_full, !((is.na(V5.x)) & (is.na(V5.y)) & (is.na(V5.x.x)) & (is.na(V5.y.y)) & (is.na(V5.x.x.x)) & (is.na(V5.y.y.y)))  ) %>%
