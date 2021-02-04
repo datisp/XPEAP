@@ -15,7 +15,12 @@ source activate $conda_bedops
 
 # transform Xprime coverage
 cd $dir/output/coverage_Xprime/coverage-tnoar_min_normalized
-rename 's/_div_by_[0-9]*.[0-9]_multi_by_[0-9]*.[0-9]_/_/' *.wig
+for f in *.wig; do
+	set -x
+	mv "$f" "$(echo $f | awk -F '[_]' '{OFS = "_"}{print $1, $2, $3, $4, $5, $6, $13}')"
+	set +x
+done
+
 for f in *.wig; do
 	wig2bed < $f > ../../../../$dir_out/coverage_Xprime/$f".bed";
 done
@@ -24,7 +29,13 @@ cd ../..
 
 # transform full coverage
 cd coverage_full/coverage-tnoar_min_normalized
-rename 's/_div_by_[0-9]*.[0-9]_multi_by_[0-9]*.[0-9]_/_/' *.wig
+
+for f in *.wig; do
+	set -x
+	mv "$f" "$(echo $f | awk -F '[_]' '{OFS = "_"}{print $1, $2, $3, $4, $5, $6, $13}')"
+	set +x
+done
+
 for f in *.wig; do
 	wig2bed < $f > ../../../../$dir_out/coverage_full/$f".bed";
 done

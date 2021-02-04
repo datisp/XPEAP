@@ -7,9 +7,9 @@ merged_bed <- read_tsv(paste0("./Xprime_analysis/Xprime_DESeq/deseq_",args[6],"_
   dplyr::rename("chromosome" = "X1",
                 "start" = "X2",
                 "end" = "X3",
-                "strand" = "X4",
+                "strand" = "X6",
                 "log2FoldChange" = "X5",
-		"baseMean" = "X6") %>%
+		"baseMean" = "X4") %>%
   mutate(length = end - start)
 
 # group all detected and valid X'-ends in clusters according to their proximity
