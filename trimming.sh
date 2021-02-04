@@ -11,8 +11,8 @@ mkdir reads_trimmed
 
 # copy raw reads
 echo "copying raw data..."
-cp $path_raw_data/*$var_strain1*fq.gz ./reads_raw/
-cp $path_raw_data/*$var_strain2*fq.gz ./reads_raw/
+cp $path_raw_data/*$strain1*fq.gz ./reads_raw/
+cp $path_raw_data/*$strain2*fq.gz ./reads_raw/
 
 cp $path_raw_data/{$strain1_rep1$filetype$compression,$strain1_rep2$filetype$compression,$strain1_rep3$filetype$compression,$strain2_rep1$filetype$compression,$strain2_rep2$filetype$compression,$strain2_rep3$filetype$compression} ./reads_raw/
 
