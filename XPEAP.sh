@@ -12,40 +12,40 @@ echo "    |  |:|     \  \:\    \  \:\/:/    \  \:\       \  \:\   "
 echo "    |  |:|      \  \:\    \  \::/      \  \:\       \  \:\  "
 echo "    |__|/        \__\/     \__\/        \__\/        \__\/  "
 
-# 2020-08-19 version 1.0
+# 2021-02-12 version 1.0.1
 
 #================================================================================#
 
 # please modify the content of the following variables:
 
 # path to folder with raw data
-export path_raw_data="/nfs/agmikmol/Timon/raw_reads/2019-07-02_RNAseq_raw_wt_pnp/2018-09-27_FastQ_P180084"
+export path_raw_data="/path/raw/data"
 
 # path to gff and genomic.fasta
-export path_gff="/nfs/agmikmol/Timon/refseq/GCF_000012905.2_ASM1290v2_genomic_extended.gff"
-export path_genomic_fasta="/nfs/agmikmol/Timon/refseq/GCF_000012905.2_ASM1290v2_genomic.fa"
+export path_gff="/path/gff/genomic.gff"
+export path_genomic_fasta="/path/gff/genomic.fa"
 
-export strain1="pnp"
-export strain2="wt"
+export strain1="strain1"
+export strain2="strain1"
 
 # save filenames of each read file (without file type extension!)
-export strain1_rep1="L1802003_Nr25_pnp_exp_1"
-export strain1_rep2="L1802004_Nr26_pnp_exp_2"
-export strain1_rep3="L1802005_Nr27_pnp_exp_3"
-export strain2_rep1="L1802021_Nr43_WT_neu_1"
-export strain2_rep2="L1802022_Nr44_WT_neu_2"
-export strain2_rep3="L1802023_Nr45_WT_neu_3"
+export strain1_rep1="filename_strain1_rep1"
+export strain1_rep2="filename_strain1_rep2"
+export strain1_rep3="filename_strain1_rep3"
+export strain2_rep1="filename_strain2_rep1"
+export strain2_rep2="filename_strain2_rep2"
+export strain2_rep3="filename_strain2_rep3"
 export filetype=".fq"
 export compression=".gz"
 
 # path to fastqc bin file
-export path_fastqc="/homes/user/Tools/FastQC"
+export path_fastqc="/path/FastQC"
 
 # names of conda environments
-export conda_multiqc="multiqc"
-export conda_trim_galore="trimming"
-export conda_reademption="rnaseq"
-export conda_bedops="bedops"
+export conda_multiqc="name_conda_multiqc"
+export conda_trim_galore="name_conda_trimming"
+export conda_reademption="name_conda_rnaseq"
+export conda_bedops="name_conda_bedops"
 
 export cutoff_counts="10"
 export cutoff_padj="0.05"
@@ -54,7 +54,7 @@ export cutoff_ratio="0.05"
 
 # READemption settings:
 export n_cores="24" # number of cores to be used for computation
-export dir="READemption_PNPase" # name for READemption project folders
+export dir="name_dir" # name for READemption project folders
 export coverage_style="last_base_only" # options are "first_base_only" and "last_base_only"
 
 #================================================================================#
