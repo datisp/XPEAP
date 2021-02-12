@@ -2,6 +2,20 @@
 
 [![DOI](https://zenodo.org/badge/253721688.svg)](https://zenodo.org/badge/latestdoi/253721688)
 
+- [XPEAP - **X P**rime **E**nd **A**nalysis **P**ipeline](#xpeap-----x-p--rime---e--nd---a--nalysis---p--ipeline)
+  * [About](#about)
+    + [Which input files do I need?](#which-input-files-do-i-need-)
+    + [Which functions are provided?](#which-functions-are-provided-)
+    + [What does the output look like?](#what-does-the-output-look-like-)
+    + [Structure](#structure)
+    + [Upcoming features](#upcoming-features)
+  * [Requirements](#requirements)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    + [Editing variables](#editing-variables)
+    + [Example for variable header](#example-for-variable-header)
+  * [A more detailed view on the pipeline](#a-more-detailed-view-on-the-pipeline)
+
 ## About
 The XPEAP (**X P**rime **E**nd **A**nalysis **P**ipeline) allows the detection of RNA 5' and 3' ends in prokaryotic NGS data. It is written as an easy to use solution to compare RNA sequencing data from two bacterial strains, each in triplicates, and to identify differential 5'/3' ends. To my knowlege, the basic concept of a 5´ end identification workflow was first published by Förstner et al., 2018 (DOI: 10.26508/lsa.201800080). Based on this method, the aim of this project is to provide a complete pipeline which covers all relevant functions from initial raw data processing to quantification and the final statistical analysis. XPEAP addresses mainly wet lab scientists who are conversant with using UNIX based environments and the command-line interface. The usage is fairly simple and does not require programming. So you are a microbiologist focused on RNA research and you want investigate RNA 5'/3' ends in your NGS data? Great! Just read this documentation, download XPEAP and start your analysis.
 
