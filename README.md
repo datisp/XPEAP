@@ -2,7 +2,6 @@
 
 [![DOI](https://zenodo.org/badge/253721688.svg)](https://zenodo.org/badge/latestdoi/253721688)
 
-- [XPEAP - **X P**rime **E**nd **A**nalysis **P**ipeline](#xpeap-----x-p--rime---e--nd---a--nalysis---p--ipeline)
   * [About](#about)
     + [Which input files do I need?](#which-input-files-do-i-need-)
     + [Which functions are provided?](#which-functions-are-provided-)
