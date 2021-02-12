@@ -9,8 +9,6 @@ print(args)
 ### DESeq2
 print("starting DESeq2 analysis...")
 count_table_raw <- read_tsv("./Xprime_analysis/Xprime_DESeq/quantification_full.csv")
-#count_table_raw <- read.table("./Xprime_analysis/Xprime_DESeq/quantification_full.csv", skip=1, sep='\t')
-#count_table_raw <- prime_quanti_full
 position_metadata <- count_table_raw[3]
 count_table <- round(count_table_raw[,4:9])
 libraries <- c(args[6], args[7], args[8], args[9], args[10], args[11])
